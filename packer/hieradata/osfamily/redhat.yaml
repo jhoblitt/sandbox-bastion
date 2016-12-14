@@ -4,3 +4,6 @@ packages:
   - vim-enhanced
   - ack
   - emacs
+  # nslookup / dig
+  - bind-utils
+  - traceroute
