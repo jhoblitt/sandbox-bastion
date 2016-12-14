@@ -1,0 +1,6 @@
+packages:
+  - git
+  - tree
+  - vim-enhanced
+  - ack
+  - emacs

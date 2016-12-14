@@ -1,0 +1,60 @@
+{
+  "builders":[
+    {
+      "name": "aws-centos-7",
+      "type": "amazon-ebs",
+      "ami_name": "centos-7-overlord-{{user `build_timestamp`}}",
+      "instance_type": "c4.large",
+      "region": "{{user `aws_default_region`}}",
+      "source_ami": "{{user `source_ami`}}",
+      "ssh_pty": true,
+      "ssh_username": "centos",
+      "ami_block_device_mappings": [
+        {
+          "device_name": "/dev/sda1",
+          "volume_type": "gp2"
+        }
+      ]
+    }
+  ],
+  "provisioners":[
+    {
+      "type": "shell",
+      "inline": [
+        "sudo yum update -y",
+        "curl https://raw.githubusercontent.com/petems/puppet-install-shell/master/install_puppet_agent.sh | sudo sh -s -v 4.8.1"
+      ]
+    },
+	{
+	  "type": "file",
+	  "source": "hieradata",
+	  "destination": "/tmp"
+	},
+    {
+      "type": "puppet-masterless",
+       "manifest_file": "manifests/default.pp",
+       "module_paths": ["./modules"],
+       "puppet_bin_dir": "/opt/puppetlabs/bin",
+       "extra_arguments": ["--disable_warnings=deprecations"],
+       "hiera_config_path": "./hiera.yaml"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo yum erase -y puppetlabs-release-pc1 puppet-agent"
+      ]
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
+      "scripts": [
+        "scripts/centos/cleanup.sh"
+      ]
+    }
+  ],
+  "variables": {
+    "build_timestamp": "{{isotime \"20060102150405\"}}",
+    "aws_default_region": "us-west-2",
+    "source_ami": "ami-d2c924b2"
+  }
+}

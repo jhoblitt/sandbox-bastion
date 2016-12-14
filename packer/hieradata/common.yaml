@@ -1,0 +1,26 @@
+classes:
+  - stdlib
+  - augeas
+  - sysstat
+  - irqbalance
+  - ntp
+  - vagrant
+  - rvm
+  - rvm::group
+timezone:
+  timezone: US/Pacific
+tuned:
+  profile: virtual-host
+selinux:
+  mode: enforcing
+vagrant:
+  version: '1.9.1'
+rvm::install_dependencies: true
+rvm::system_rubies:
+  'ruby-2.2':
+    default_use: true
+rvm::rvm_gems:
+  bundler:
+    name: bundler
+    ruby_version: 'ruby-2.2'
+    ensure: '1.13.6'

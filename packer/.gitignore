@@ -1,0 +1,6 @@
+.bundle
+creds.sh
+.librarian
+.tmp
+modules
+bin/
