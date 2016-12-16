@@ -1,10 +1,10 @@
 UNAME := $(shell uname -s | tr A-Z a-z)
 BIN_DIR=./bin
 PRODUCT=terraform
-VERSION=0.7.13
+VERSION=0.8.1
 ZIP_FILE=$(PRODUCT)_$(VERSION)_$(UNAME)_amd64.zip
 
-all: $(BIN_DIR) validate
+all: $(BIN_DIR) validate id_rsa id_rsa.pub
 
 $(BIN_DIR):
 	mkdir $@
@@ -19,5 +19,8 @@ fmt:
 validate:
 	$(BIN_DIR)/terraform validate
 
+id_rsa id_rsa.pub:
+	ssh-keygen -t rsa -b 2048 -C terraform -N "" -f id_rsa
+
 clean:
-	-rm -rf bin
+	-rm -rf bin .terraform
