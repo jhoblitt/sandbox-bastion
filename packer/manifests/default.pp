@@ -24,3 +24,9 @@ if $::osfamily == 'RedHat' {
     enable => false,
   }
 }
+
+$packages = hiera('packages', undef)
+
+if ($packages) {
+  ensure_packages($packages)
+}

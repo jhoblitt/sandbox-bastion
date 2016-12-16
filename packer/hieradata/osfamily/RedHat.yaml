@@ -1,0 +1,16 @@
+packages:
+  - git
+  # user convenience
+  - screen
+  - tmux
+  - tree
+  - vim-enhanced
+  - emacs-nox
+  - ack
+  # nslookup / dig
+  - bind-utils
+  - traceroute
+  # deps for ssh key injection
+  - python-devel # needed to build pyyaml
+  - python-pip
+  - jq
